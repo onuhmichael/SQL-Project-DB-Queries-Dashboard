@@ -1,2 +1,2 @@
-# SQL-Project-DB-Queries-Dashboard
-Elevate Your SQL Skills: Database Creation, Advanced Queries, Interactive Dashboard Development.
+# SQL Mastery through Instagram Data Modeling and Analysis Using PostgreSQL 
+This project serves as a hands-on opportunity to advance your SQL expertise. As you model Instagram data in PostgreSQL, you'll strengthen your SQL skills by solving real challenges. Crafting intricate SQL queries to extract meaningful insights from user posts, comments, and likes will elevate your ability to handle relational databases effectively. You'll gain experience in aggregating data, implementing joins, and leveraging advanced SQL functions, all of which are vital for any SQL professional.
