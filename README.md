@@ -20,7 +20,7 @@ Data modeling is the process of defining the structure of a database, including 
 # In This Tutorial, We Will Use A Real-World Example To Explain The Concept Of Data modeling and Build A SQL Script In PostgreSQL Using the Instagram Data Model Captured Below  :
 Before we start building the tables, we need to create a data model to visualize the relationships between the data. In this case, we can create an entity-relationship (ER) diagram to represent the relationships between the users (user ID, username, email), posts (post ID, user ID, content, timestamp), comments (comment ID, post ID, user ID, content, timestamp), likes (like ID, post ID, user ID, timestamp), and followers (user ID, friend ID, status). The analysis of databases used by top Social networks showed that these SNSs used both, relational and NoSQL databases, although most use NoSQL. I am using a relational database model to help me in mastering SQL.
 
-![111 drawio](https://github.com/onuhmichael/SQL-Project-DB-Queries-Dashboard/assets/51151461/eab181fa-428a-4991-9ae3-289d32204995)
+![2222 drawio](https://github.com/onuhmichael/SQL-Project-DB-Queries-Dashboard/assets/51151461/447ad453-5c90-4670-bc0e-59ca609f8624)
 
 
 
