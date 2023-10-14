@@ -188,6 +188,51 @@ SELECT * FROM Posts: This part of the query selects all columns (*) from the "Po
 ORDER BY created_at DESC;: This is the sorting condition specified in the query. It orders the selected rows based on the "created_at" column in descending (DESC) order.
 In this scenario, the query is useful when you want to see the posts from the "Posts" table in reverse chronological order, with the newest posts appearing first. The ORDER BY clause is valuable for organizing query results, providing meaningful insights into data, and facilitating data analysis by presenting information in a structured manner.
 
+### GROUP BY and HAVING
+### (4) -- Counting the number of likes for each post and showing only the posts with more than 2 likes.
+SELECT Posts.post_id, COUNT(Likes.like_id) AS num_likes
+FROM Posts
+LEFT JOIN Likes ON Posts.post_id = Likes.post_id
+GROUP BY Posts.post_id
+HAVING COUNT(Likes.like_id) > 2;]
+
+### Description:
+
+This SQL query demonstrates the use of the GROUP BY and HAVING clauses to perform aggregations and filtering based on those aggregations. In this example, the query calculates the number of likes for each post and displays only the posts that have more than 2 likes.
+
+### Explanation:
+
+SELECT Posts.post_id, COUNT(Likes.like_id) AS num_likes: This part of the query selects the "post_id" from the "Posts" table and counts the number of corresponding "like_id" entries from the "Likes" table. The result is aliased as "num_likes" for clarity.
+FROM Posts LEFT JOIN Likes ON Posts.post_id = Likes.post_id: This line combines data from the "Posts" table and the "Likes" table using a left join, ensuring that all posts are included in the result, even if they have no likes.
+GROUP BY Posts.post_id: The GROUP BY clause groups the results by the "post_id" column. This means that the subsequent aggregate function operates on distinct posts.
+HAVING COUNT(Likes.like_id) > 2; The HAVING clause filters the grouped results, displaying only the posts where the count of likes (num_likes) is greater than 2.
+This query is useful when you want to identify popular posts based on the number of likes. The GROUP BY clause is essential for performing aggregations on specific columns, and the HAVING clause allows for filtering the aggregated results, providing valuable insights into the data.
+
+### Aggregation Functions
+
+### (5)-- Finding the total number of likes for all posts
+SELECT SUM(num_likes) AS total_likes
+FROM (
+    SELECT COUNT(Likes.like_id) AS num_likes
+    FROM Posts
+    LEFT JOIN Likes ON Posts.post_id = Likes.post_id
+    GROUP BY Posts.post_id
+) AS likes_by_post;
+
+### Description:
+
+This SQL query demonstrates the use of aggregation functions, specifically the SUM() function, to calculate the total number of likes for all posts. It achieves this by first counting the number of likes for each post using the COUNT() function, then summing up these counts to get the overall total likes.
+
+### Explanation:
+
+SELECT COUNT(Likes.like_id) AS num_likes FROM Posts LEFT JOIN Likes ON Posts.post_id = Likes.post_id GROUP BY Posts.post_id: This inner query counts the number of likes for each post by joining the "Posts" and "Likes" tables on the "post_id" column, grouping the results by "post_id", and aliasing the count as "num_likes".
+SELECT SUM(num_likes) AS total_likes FROM (...) AS likes_by_post;: The outer query calculates the sum of the "num_likes" column derived from the inner query. The inner query is treated as a subquery and aliased as "likes_by_post". The result, aliased as "total_likes", represents the total number of likes across all posts.
+This query is valuable when you want to find the cumulative likes across all posts in a social media platform, blog, or any system where posts can be liked. It showcases the power of SQL's aggregation functions to perform complex calculations, providing a clear overview of the total engagement within the dataset.
+
+
+
+
+
 
 
 
