@@ -318,6 +318,71 @@ RANK() OVER (ORDER BY num_likes DESC) AS rank: Applies the RANK() window functio
 
 Imagine you have a social media platform where users can like posts. Using this query, you can find out which posts have the most likes and rank them accordingly. The 'Rank' column will indicate the popularity of each post based on the number of likes it has received, allowing you to showcase the most liked posts to users on your platform.
 
+### Case Statement 
+
+### (9)-- Categorizing the posts based on the number of likes
+SELECT
+    post_id,
+    CASE
+        WHEN num_likes = 0 THEN 'No likes'
+        WHEN num_likes < 5 THEN 'Few likes'
+        WHEN num_likes < 10 THEN 'Some likes'
+        ELSE 'Lots of likes'
+    END AS like_category
+FROM (
+    SELECT Posts.post_id, COUNT(Likes.like_id) AS num_likes
+    FROM Posts
+    LEFT JOIN Likes ON Posts.post_id = Likes.post_id
+    GROUP BY Posts.post_id
+) AS likes_by_post;
+
+### Description:
+
+In this SQL Analytics example, a CASE statement is used to categorize posts based on the number of likes they have received. The query calculates the total number of likes for each post by joining the Posts table with the Likes table on the post_id. It then groups the results by post_id, counting the number of likes for each post.
+
+The CASE statement is employed within the SELECT statement. It evaluates the value of 'num_likes' (the total likes for each post) and assigns a category to each post based on the following conditions:
+
+If the post has 0 likes, it is categorized as 'No likes'.
+If the post has less than 5 likes, it is categorized as 'Few likes'.
+If the post has 5 or more but less than 10 likes, it is categorized as 'Some likes'.
+If the post has 10 or more likes, it is categorized as 'Lots of likes'.
+The resulting output includes the post_id and the corresponding like category assigned based on the number of likes for each post.
+
+### Explanation:
+
+This SQL query helps you analyze the popularity of posts on a social media platform based on the number of likes they have received. By categorizing posts into different groups such as 'No likes', 'Few likes', 'Some likes', or 'Lots of likes', you can quickly understand the engagement level of each post.
+
+### Example Usage:
+
+Imagine you have a blog platform where users can like posts. By using this query, you can categorize the posts into different groups, allowing you to identify posts that need more engagement and recognize highly popular posts easily. This categorization can be used to create tailored recommendations for users or to highlight trending content.
+
+### Common Table Expression (CTE) 
+
+### (10)-- Finding all the posts and their comments using a Common Table Expression (CTE)
+WITH post_comments AS (
+    SELECT Posts.post_id, Posts.caption, Comments.comment_text
+    FROM Posts
+    LEFT JOIN Comments ON Posts.post_id = Comments.post_id
+)
+SELECT *
+FROM post_comments;
+
+### Description:
+
+In this SQL Analytics example, a Common Table Expression (CTE) is used to find all the posts and their corresponding comments. A CTE is a temporary result set that can be referenced within the context of a SELECT, INSERT, UPDATE, or DELETE statement. In this query, a CTE named 'post_comments' is created to join the Posts table with the Comments table on the post_id, retrieving the post_id, caption (post text), and comment_text for each post-comment pair.
+
+After defining the CTE, the main SELECT statement selects all columns from the 'post_comments' CTE. This allows you to view a consolidated list of posts and their associated comments, providing a clear overview of the posts and the comments made on them.
+
+### Explanation:
+
+Using a CTE, this query simplifies the process of combining data from multiple tables. It first creates a virtual table ('post_comments') containing the post_id, post text, and comment text. This CTE acts as an intermediate step, making it easier to query and display the desired information. The final SELECT statement then retrieves all columns from this CTE, presenting a unified view of posts and comments.
+
+### Example Usage:
+
+Consider a scenario where you have a social media platform with posts and comments. By employing this query, you can quickly obtain a comprehensive list of posts along with the comments made on each post. This information can be valuable for content moderation, analysing user engagement, or enhancing user experience by showing posts and comments together.
+
+
+
 
 
 
