@@ -80,8 +80,9 @@ Implement Constraints: Define constraints like unique, not null, default values,
 );
 # SQL Queries - Populate the database with initial data based on the data model
 
--- Inserting into Users table
-INSERT INTO Users (name, email, phone_number)
+# -- Inserting into Users table
+INSERT INTO Users
+(name, email, phone_number)
 VALUES
     ('John Smith', 'johnsmith@gmail.com', '1234567890'),
     ('Jane Doe', 'janedoe@yahoo.com', '0987654321'),
@@ -89,7 +90,7 @@ VALUES
     ('Alice Brown', 'abrown@yahoo.com', NULL),
     ('Mike Davis', 'mdavis@gmail.com', '5556667777');
 
--- Inserting into Posts table
+# -- Inserting into Posts table
 INSERT INTO Posts (user_id, caption, image_url)
 VALUES
     (1, 'Beautiful sunset', '<https://www.example.com/sunset.jpg>'),
@@ -98,7 +99,7 @@ VALUES
     (4, 'Throwback to my vacation', '<https://www.example.com/vacation.jpg>'),
     (5, 'Amazing concert', '<https://www.example.com/concert.jpg>');
 
--- Inserting into Comments table
+# -- Inserting into Comments table
 INSERT INTO Comments (post_id, user_id, comment_text)
 VALUES
     (1, 2, 'Wow! Stunning.'),
@@ -109,7 +110,7 @@ VALUES
     (4, 1, 'Looks like an awesome trip.'),
     (5, 3, 'Wish I was there!');
 
--- Inserting into Likes table
+# -- Inserting into Likes table
 INSERT INTO Likes (post_id, user_id)
 VALUES
     (1, 2),
@@ -123,7 +124,7 @@ VALUES
     (5, 4),
     (5, 5);
 
--- Inserting into Followers table
+# -- Inserting into Followers table
 INSERT INTO Followers (user_id, follower_user_id)
 VALUES
     (1, 2),
