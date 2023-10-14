@@ -20,7 +20,123 @@ Data modeling is the process of defining the structure of a database, including 
 # In This Tutorial, We Will Use A Real-World Example To Explain The Concept Of Data modeling and Build A SQL Script In PostgreSQL Using the Instagram Data Model Captured Below  :
 Before we start building the tables, we need to create a data model to visualize the relationships between the data. In this case, we can create an entity-relationship (ER) diagram to represent the relationships between the users (user ID, username, email), posts (post ID, user ID, content, timestamp), comments (comment ID, post ID, user ID, content, timestamp), likes (like ID, post ID, user ID, timestamp), and followers (user ID, friend ID, status). The analysis of databases used by top Social networks showed that these SNSs used both, relational and NoSQL databases, although most use NoSQL. I am using a relational database model to help me in mastering SQL.
 
-![2222 drawio](https://github.com/onuhmichael/SQL-Project-DB-Queries-Dashboard/assets/51151461/447ad453-5c90-4670-bc0e-59ca609f8624)
+![Data-model-instagramdb](https://github.com/onuhmichael/SQL-Project-DB-Queries-Dashboard/assets/51151461/934a7966-7434-45d9-9dfa-c1df81d5563a)
+
+# Choose a Database Management System (DBMS): We will be using PostgreSQL
+PostgreSQL is a popular and powerful open-source PostgreSQL advanced, enterprise-class open-source relational database that supports both SQL (relational) and JSON (non-relational) querying.
+Cost-Effective: Being open-source means PostgreSQL is free to use, making it a cost-effective choice for businesses and projects with budget constraints.
+You can check out the link below for more information on how to set it up and use it.
+# How to Set Up PostgreSQL and Create Databases (Step by Step)
+https://www.youtube.com/watch?v=uoJjDbL-Y_E
+
+#  Implement the Database Schema:
+Create Tables/Collections: Implement the tables or collections in the database based on the entities in your data model.
+Define Relationships: Establish relationships (foreign keys, references) between tables or collections.
+Implement Constraints: Define constraints like unique, not null, default values, etc., to maintain data integrity.
+# SQL Queries - Creating Tables
+
+ CREATE TABLE Users (
+    user_id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    phone_number VARCHAR(20) UNIQUE
+);
+
+ CREATE TABLE Posts (
+    post_id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    caption TEXT,
+    image_url VARCHAR(200),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);
+
+ CREATE TABLE Comments (
+    comment_id SERIAL PRIMARY KEY,
+    post_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    comment_text TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (post_id) REFERENCES Posts(post_id),
+    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);
+
+ CREATE TABLE Likes (
+    like_id SERIAL PRIMARY KEY,
+    post_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (post_id) REFERENCES Posts(post_id),
+    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);
+
+ CREATE TABLE Followers (
+    follower_id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    follower_user_id INTEGER NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id),
+    FOREIGN KEY (follower_user_id) REFERENCES Users(user_id)
+);
+# SQL Queries - Populate the database with initial data based on the data model
+
+-- Inserting into Users table
+INSERT INTO Users (name, email, phone_number)
+VALUES
+    ('John Smith', 'johnsmith@gmail.com', '1234567890'),
+    ('Jane Doe', 'janedoe@yahoo.com', '0987654321'),
+    ('Bob Johnson', 'bjohnson@gmail.com', '1112223333'),
+    ('Alice Brown', 'abrown@yahoo.com', NULL),
+    ('Mike Davis', 'mdavis@gmail.com', '5556667777');
+
+-- Inserting into Posts table
+INSERT INTO Posts (user_id, caption, image_url)
+VALUES
+    (1, 'Beautiful sunset', '<https://www.example.com/sunset.jpg>'),
+    (2, 'My new puppy', '<https://www.example.com/puppy.jpg>'),
+    (3, 'Delicious pizza', '<https://www.example.com/pizza.jpg>'),
+    (4, 'Throwback to my vacation', '<https://www.example.com/vacation.jpg>'),
+    (5, 'Amazing concert', '<https://www.example.com/concert.jpg>');
+
+-- Inserting into Comments table
+INSERT INTO Comments (post_id, user_id, comment_text)
+VALUES
+    (1, 2, 'Wow! Stunning.'),
+    (1, 3, 'Beautiful colors.'),
+    (2, 1, 'What a cutie!'),
+    (2, 4, 'Aww, I want one.'),
+    (3, 5, 'Yum!'),
+    (4, 1, 'Looks like an awesome trip.'),
+    (5, 3, 'Wish I was there!');
+
+-- Inserting into Likes table
+INSERT INTO Likes (post_id, user_id)
+VALUES
+    (1, 2),
+    (1, 4),
+    (2, 1),
+    (2, 3),
+    (3, 5),
+    (4, 1),
+    (4, 2),
+    (4, 3),
+    (5, 4),
+    (5, 5);
+
+-- Inserting into Followers table
+INSERT INTO Followers (user_id, follower_user_id)
+VALUES
+    (1, 2),
+    (2, 1),
+    (1, 3),
+    (3, 1),
+    (1, 4),
+    (4, 1),
+    (1, 5),
+    (5, 1);
+
+    
+
 
 
 
