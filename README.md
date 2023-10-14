@@ -229,6 +229,66 @@ SELECT COUNT(Likes.like_id) AS num_likes FROM Posts LEFT JOIN Likes ON Posts.pos
 SELECT SUM(num_likes) AS total_likes FROM (...) AS likes_by_post;: The outer query calculates the sum of the "num_likes" column derived from the inner query. The inner query is treated as a subquery and aliased as "likes_by_post". The result, aliased as "total_likes", represents the total number of likes across all posts.
 This query is valuable when you want to find the cumulative likes across all posts in a social media platform, blog, or any system where posts can be liked. It showcases the power of SQL's aggregation functions to perform complex calculations, providing a clear overview of the total engagement within the dataset.
 
+### Subquery 
+### (6)-- Finding all the users who have commented on post_id 1 
+
+SELECT name FROM Users WHERE user_id IN ( SELECT user_id FROM Comments WHERE post_id = 1 );
+
+### Description:
+
+This SQL query demonstrates the use of a subquery to find all users who have commented on a specific post (post_id 1). It achieves this by first selecting user_ids from the "Comments" table where the post_id is 1 and then using these user_ids to fetch corresponding names from the "Users" table.
+
+### Explanation:
+
+SELECT user_id FROM Comments WHERE post_id = 1: This inner query selects all user_ids from the "Comments" table where the post_id is 1. This provides a list of user_ids who have commented on post_id 1.
+SELECT name FROM Users WHERE user_id IN (...): The outer query uses the IN keyword to filter users whose user_id is present in the list obtained from the inner query. It selects the names of users who have commented on post_id 1.
+This query is useful when you want to retrieve specific information about users who have interacted with a particular post, such as users who have commented on a specific article, image, or video. The subquery narrows down the user_ids related to the specified post, allowing for a targeted selection of user details from the "Users" table.
+
+### JOINS
+### (7) -- Which users have liked post_id 2?
+
+SELECT Users.name
+FROM Users
+JOIN Likes ON Users.user_id = Likes.user_id
+WHERE Likes.post_id = 2;
+
+### -- Which posts have no comments?
+
+SELECT Posts.caption
+FROM Posts
+LEFT JOIN Comments ON Posts.post_id = Comments.post_id
+WHERE Comments.comment_id IS NULL;
+
+### -- Which posts were created by users who have no followers?
+
+SELECT Posts.caption
+FROM Posts
+JOIN Users ON Posts.user_id = Users.user_id
+LEFT JOIN Followers ON Users.user_id = Followers.user_id
+WHERE Followers.follower_id IS NULL;
+
+
+### Description:
+
+These SQL queries demonstrate the usage of different types of JOIN operations to extract specific information from related tables.
+
+### Explanation:
+
+Finding Users who Liked a Specific Post (post_id 2):
+
+SELECT Users.name FROM Users JOIN Likes ON Users.user_id = Likes.user_id WHERE Likes.post_id = 2;
+This query uses an INNER JOIN to combine the "Users" and "Likes" tables based on the common user_id. It selects the names of users who have liked the post with post_id = 2.
+Finding Posts with No Comments:
+
+SELECT Posts.caption FROM Posts LEFT JOIN Comments ON Posts.post_id = Comments.post_id WHERE Comments.comment_id IS NULL;
+Here, a LEFT JOIN is utilized between the "Posts" and "Comments" tables on the post_id. The query selects post captions where there are no corresponding comments. The Comments.comment_id IS NULL condition ensures that only posts without comments are retrieved.
+Finding Posts by Users with No Followers:
+
+SELECT Posts.caption FROM Posts JOIN Users ON Posts.user_id = Users.user_id LEFT JOIN Followers ON Users.user_id = Followers.user_id WHERE Followers.follower_id IS NULL;
+This query involves a JOIN between "Posts" and "Users" tables using user_id. Additionally, it performs a LEFT JOIN with the "Followers" table to find posts created by users who have no followers. The condition Followers.follower_id IS NULL ensures that only posts by users without followers are selected.
+These queries are valuable in scenarios where you need to extract specific information based on relationships between different entities. The JOIN operations help combine data from multiple tables, enabling complex analyses and detailed insights.
+
+
 
 
 
