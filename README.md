@@ -284,9 +284,40 @@ SELECT Posts.caption FROM Posts LEFT JOIN Comments ON Posts.post_id = Comments.p
 Here, a LEFT JOIN is utilized between the "Posts" and "Comments" tables on the post_id. The query selects post captions where there are no corresponding comments. The Comments.comment_id IS NULL condition ensures that only posts without comments are retrieved.
 Finding Posts by Users with No Followers:
 
-SELECT Posts.caption FROM Posts JOIN Users ON Posts.user_id = Users.user_id LEFT JOIN Followers ON Users.user_id = Followers.user_id WHERE Followers.follower_id IS NULL;
-This query involves a JOIN between "Posts" and "Users" tables using user_id. Additionally, it performs a LEFT JOIN with the "Followers" table to find posts created by users who have no followers. The condition Followers.follower_id IS NULL ensures that only posts by users without followers are selected.
+SELECT Posts. caption FROM Posts JOIN Users ON Posts.user_id = Users.user_id LEFT JOIN Followers ON Users.user_id = Followers.user_id WHERE Followers.follower_id IS NULL;
+This query involves a JOIN between the "Posts" and "Users" tables using user_id. Additionally, it performs a LEFT JOIN with the "Followers" table to find posts created by users who have no followers. The condition Followers.follower_id IS NULL ensures that only posts by users without followers are selected.
 These queries are valuable in scenarios where you need to extract specific information based on relationships between different entities. The JOIN operations help combine data from multiple tables, enabling complex analyses and detailed insights.
+
+### Window Function 
+
+### (8)-- Ranking the posts based on the number of likes
+SELECT post_id, num_likes, RANK() OVER (ORDER BY num_likes DESC) AS rank
+FROM (
+    SELECT Posts.post_id, COUNT(Likes.like_id) AS num_likes
+    FROM Posts
+    LEFT JOIN Likes ON Posts.post_id = Likes.post_id
+    GROUP BY Posts.post_id
+) AS likes_by_post;
+
+### Description:
+
+In this SQL Analytics example, a window function is utilized to rank posts based on the number of likes they have received. The query calculates the total number of likes for each post by joining the Posts table with the Likes table on the post_id. It then groups the results by post_id, counting the number of likes for each post.
+
+The outer query employs a window function, specifically the RANK() function, which assigns a rank to each post based on the descending order of the number of likes. The result set includes the post_id, the total number of likes (num_likes), and the rank assigned to each post.
+
+### Explanation:
+
+Inner Query:
+
+Posts.post_id: Select the post ID from the Posts table.
+COUNT(Likes.like_id) AS num_likes: Counts the number of likes for each post by joining the Posts table with the Likes table and counting the like IDs. This is done for each post separately due to the GROUP BY clause.
+Outer Query:
+
+RANK() OVER (ORDER BY num_likes DESC) AS rank: Applies the RANK() window function over the result set, ordering the posts by the number of likes in descending order. The RANK() function assigns a unique rank to each post based on its number of likes.
+###  Example Usage:
+
+Imagine you have a social media platform where users can like posts. Using this query, you can find out which posts have the most likes and rank them accordingly. The 'Rank' column will indicate the popularity of each post based on the number of likes it has received, allowing you to showcase the most liked posts to users on your platform.
+
 
 
 
